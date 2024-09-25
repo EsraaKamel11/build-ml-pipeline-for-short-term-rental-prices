@@ -6,10 +6,10 @@ import argparse
 import logging
 import wandb
 import mlflow
+import os
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
 
-from wandb_utils.log_artifact import log_artifact
 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
@@ -18,7 +18,7 @@ logger = logging.getLogger()
 
 def go(args):
 
-    run = wandb.init(job_type="test_model")
+    run = wandb.init(project="nyc_airbnb", job_type="test_model")
     run.config.update(args)
 
     logger.info("Downloading artifacts")
@@ -27,10 +27,11 @@ def go(args):
     model_local_path = run.use_artifact(args.mlflow_model).download()
 
     # Download test dataset
-    test_dataset_path = run.use_artifact(args.test_dataset).file()
+    test_dataset_path = run.use_artifact(args.test_dataset).download()
+    logger.info(f"Downloading test dataset to: {test_dataset_path}")
 
     # Read test dataset
-    X_test = pd.read_csv(test_dataset_path)
+    X_test = pd.read_csv(os.path.join(test_dataset_path, 'test_data.csv'))
     y_test = X_test.pop("price")
 
     logger.info("Loading model and performing inference on test set")

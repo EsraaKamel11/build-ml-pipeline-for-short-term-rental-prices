@@ -1,6 +1,7 @@
 import pytest
 import pandas as pd
 import wandb
+import os
 
 
 def pytest_addoption(parser):
@@ -13,32 +14,32 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope='session')
 def data(request):
-    run = wandb.init(job_type="data_tests", resume=True)
+    run = wandb.init(project="nyc_airbnb", job_type="data_tests", resume=True)
 
     # Download input artifact. This will also note that this script is using this
     # particular version of the artifact
-    data_path = run.use_artifact(request.config.option.csv).file()
+    data_path = run.use_artifact(request.config.option.csv).download()
 
     if data_path is None:
         pytest.fail("You must provide the --csv option on the command line")
 
-    df = pd.read_csv(data_path)
+    df = pd.read_csv(os.path.join(data_path, 'clean_sample.csv'))
 
     return df
 
 
 @pytest.fixture(scope='session')
 def ref_data(request):
-    run = wandb.init(job_type="data_tests", resume=True)
+    run = wandb.init(project="nyc_airbnb", job_type="data_tests", resume=True)
 
     # Download input artifact. This will also note that this script is using this
     # particular version of the artifact
-    data_path = run.use_artifact(request.config.option.ref).file()
+    data_path = run.use_artifact(request.config.option.ref).download()
 
     if data_path is None:
         pytest.fail("You must provide the --ref option on the command line")
 
-    df = pd.read_csv(data_path)
+    df = pd.read_csv(os.path.join(data_path, 'clean_sample.csv'))
 
     return df
 
