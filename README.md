@@ -565,6 +565,12 @@ Then commit your change, make a new release (for example ``1.0.1``) and retry (o
 ``-v 1.0.1`` when calling mlflow this time). Now the run should succeed and voit la', 
 you have trained your new model on the new data.
 
+## Weights & Biases Project
+
+You can check out the project on Weights & Biases using the following link:
+
+[NYC Airbnb Project on Weights & Biases](https://wandb.ai/israa-kamel811-/nyc_airbnb)
+
 ## License
 
 [License](LICENSE.txt)
