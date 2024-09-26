@@ -6,7 +6,7 @@ dependencies:
   - python=3.10
   - pandas
   - pytest
-  - scipy
+  - scipy=1.14.1
   - pip
   - pip:
       - mlflow==2.16.2

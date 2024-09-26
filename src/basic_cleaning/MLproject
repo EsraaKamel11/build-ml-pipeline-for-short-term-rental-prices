@@ -4,6 +4,9 @@ conda_env: conda.yml
 entry_points:
   main:
     parameters:
+      sample:
+        description: "Name of the sample dataset"
+        type: string
 
       input_artifact:
         description: "The input artifact to clean"
@@ -30,4 +33,4 @@ entry_points:
         type: float
 
     command: >-
-        python run.py  --input_artifact {input_artifact}  --output_artifact {output_artifact}  --output_artifact_type {output_artifact_type}  --output_artifact_description {output_artifact_description}  --min_price {min_price}  --max_price {max_price}
+        python run.py --sample {sample} --input_artifact {input_artifact}  --output_artifact {output_artifact}  --output_artifact_type {output_artifact_type}  --output_artifact_description {output_artifact_description}  --min_price {min_price}  --max_price {max_price}

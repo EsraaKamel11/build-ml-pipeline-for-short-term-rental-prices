@@ -63,6 +63,7 @@ def go(config: DictConfig):
                     os.path.join(hydra.utils.get_original_cwd(), "src", "basic_cleaning"),
                     "main",
                     parameters={
+                        "sample": config["etl"]["sample"],
                         "input_artifact": "sample.csv:latest",
                         "output_artifact": "clean_sample.csv",
                         "output_artifact_type": "clean_sample",

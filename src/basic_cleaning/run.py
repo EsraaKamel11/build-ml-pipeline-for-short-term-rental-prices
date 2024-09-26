@@ -23,7 +23,7 @@ def go(args):
     # Download input artifact.
     logger.info(f'Downloading input artifact {args.input_artifact}')
     artifact_local_path = run.use_artifact(args.input_artifact).download()
-    df_sample = pd.read_csv(os.path.join(artifact_local_path, 'sample1.csv'))
+    df_sample = pd.read_csv(os.path.join(artifact_local_path, args.sample))
 
     # drop outliers
     logger.info(f'Dropping outliers regarding min {args.min_price}, max {args.max_price} price thresholds')
@@ -39,11 +39,6 @@ def go(args):
     # convert 'last_review' to datetime
     logger.info('Converting feature "last_review" to datetime type')
     df_clean['last_review'] = pd.to_datetime(df_clean['last_review'])
-
-    # drop rows in the dataset that are not in the proper geolocation
-    logger.info('Dropping rows in the dataset that are not in the proper geolocation')
-    idx = df_clean['longitude'].between(-74.25, -73.50) & df_clean['latitude'].between(40.5, 41.2)
-    df_clean = df_clean[idx].copy()
 
     # save cleaned dataframe
     logger.info(f'Saving cleaned dataframe as {args.output_artifact}')
@@ -64,6 +59,12 @@ def go(args):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="This step cleans the data.")
+
+    parser.add_argument(
+        "--sample",
+        type=str,
+        help="Name of the sample dataset"
+    )
 
     parser.add_argument(
         "--input_artifact",
